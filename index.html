@@ -20,7 +20,7 @@
     <header class="header">
       <p class="header-col header-col--primary">
         <a class="header-link" href="index.html">
-          SwiftLintFramework 0.45.1 Docs
+          SwiftLintFramework 0.46.1 Docs
         </a>
          (100% documented)
       </p>
@@ -323,8 +323,14 @@
 <a href="http://clang.llvm.org/docs/IntroductionToTheClangAST.html">AST</a> representation
 of your source files for more accurate results.</p>
 
-<p><a href="https://dev.azure.com/jpsim/SwiftLint/_build/latest?definitionId=4?branchName=master"><img src="https://dev.azure.com/jpsim/SwiftLint/_apis/build/status/realm.SwiftLint?branchName=master" alt="Build Status"></a>
-<a href="https://codecov.io/github/realm/SwiftLint?branch=master"><img src="https://codecov.io/github/realm/SwiftLint/coverage.svg?branch=master" alt="codecov.io"></a></p>
+<p><a href="https://github.com/realm/SwiftLint/actions/workflows/analyze.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/analyze.yml/badge.svg" alt="Analyze"></a>
+<a href="https://github.com/realm/SwiftLint/actions/workflows/pod_lib_lint.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/pod_lib_lint.yml/badge.svg" alt="CocoaPods"></a>
+<a href="https://github.com/realm/SwiftLint/actions/workflows/docker.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/docker.yml/badge.svg" alt="Docker"></a>
+<a href="https://github.com/realm/SwiftLint/actions/workflows/docs.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/docs.yml/badge.svg" alt="Docs"></a>
+<a href="https://github.com/realm/SwiftLint/actions/workflows/swiftpm.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/swiftpm.yml/badge.svg" alt="SwiftPM"></a>
+<a href="https://github.com/realm/SwiftLint/actions/workflows/tsan.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/tsan.yml/badge.svg" alt="TSan"></a>
+<a href="https://github.com/realm/SwiftLint/actions/workflows/xcodebuild.yml"><img src="https://github.com/realm/SwiftLint/actions/workflows/xcodebuild.yml/badge.svg" alt="Xcode"></a>
+<a href="https://codecov.io/gh/realm/SwiftLint"><img src="https://codecov.io/gh/realm/SwiftLint/branch/master/graph/badge.svg" alt="codecov"></a></p>
 
 <p><img src="assets/screenshot.png" alt=""></p>
 
@@ -382,7 +388,9 @@ in the issue navigator.</p>
 <p>To do this click the Project in the file navigator, then click the primary app
 target, and go to Build Phases. Click the + and select &ldquo;New Run Script Phase&rdquo;.
 Insert the following as the script:</p>
-<pre class="highlight shell"><code><span class="k">if </span>which swiftlint <span class="o">&gt;</span>/dev/null<span class="p">;</span> <span class="k">then
+<pre class="highlight shell"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PATH</span><span class="s2">:/opt/homebrew/bin"</span>
+
+<span class="k">if </span>which swiftlint <span class="o">&gt;</span>/dev/null<span class="p">;</span> <span class="k">then
   </span>swiftlint
 <span class="k">else
   </span><span class="nb">echo</span> <span class="s2">"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"</span>
@@ -446,6 +454,27 @@ APM.</p>
     <span class="ss">strict: </span><span class="kp">true</span>                            <span class="c1"># Fail on warnings? (Default: false)</span>
 <span class="p">)</span>
 </code></pre>
+<h3 id='docker' class='heading'>Docker</h3>
+
+<p><code>swiftlint</code> is also available as a <a href="https://www.docker.com/">Docker</a> image using <code>Ubuntu</code>.
+So just the first time you need to pull the docker image using the next command:</p>
+<pre class="highlight shell"><code>docker pull ghcr.io/realm/swiftlint:latest
+</code></pre>
+
+<p>Then following times, you just run <code>swiftlint</code> inside of the docker like:</p>
+<pre class="highlight shell"><code>docker run <span class="nt">-it</span> <span class="nt">-v</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:<span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> <span class="nt">-w</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> ghcr.io/realm/swiftlint:latest
+</code></pre>
+
+<p>This will execute <code>swiftlint</code> in the folder where you are right now (<code>pwd</code>), showing an output like:</p>
+<pre class="highlight shell"><code><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">-v</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:<span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> <span class="nt">-w</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> ghcr.io/realm/swiftlint:latest
+Linting Swift files <span class="k">in </span>current working directory
+Linting <span class="s1">'RuleDocumentation.swift'</span> <span class="o">(</span>1/490<span class="o">)</span>
+...
+Linting <span class="s1">'YamlSwiftLintTests.swift'</span> <span class="o">(</span>490/490<span class="o">)</span>
+Done linting! Found 0 violations, 0 serious <span class="k">in </span>490 files.
+</code></pre>
+
+<p>Here you have more documentation about the usage of <a href="https://docs.docker.com/">Docker Images</a>.</p>
 <h3 id='command-line' class='heading'>Command Line</h3>
 <pre class="highlight plaintext"><code>$ swiftlint help
 OVERVIEW: A tool to enforce Swift style and conventions.
